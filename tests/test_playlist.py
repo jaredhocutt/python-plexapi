@@ -102,14 +102,15 @@ def test_share(plex, show, fresh_plex):
     episodes = show.episodes()
 
     playlist = plex.createPlaylist('shared_from_test_plexapi', episodes)
+    try:
 
-    playlist.share('hellowlol')
+        playlist.share('hellowlol')
 
-    # Login to testserver as hellowlol
-    user = plex.myPlexAccount().user('hellowlol')
+        # Login to testserver as hellowlol
+        user = plex.myPlexAccount().user('hellowlol')
 
-    user_plex = fresh_plex(plex._base_url, user.get_token(plex.machineIdentifier))
+        user_plex = fresh_plex(plex._baseurl, user.get_token(plex.machineIdentifier))
 
-    assert playlist in user_plex.playlists()
-
-    playlist.delete()
+        assert playlist.title in [p.title for p in user_plex.playlists()]
+    finally:
+        playlist.delete()
