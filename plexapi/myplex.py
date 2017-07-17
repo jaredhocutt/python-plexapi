@@ -392,9 +392,8 @@ class MyPlexUser(PlexObject):
                 print(item.attrib.get('userID'), self.id)
                 if utils.cast(int, item.attrib.get('userID')) == self.id:
                     return item.attrib.get('accessToken')
-        except Exception as e: # fix me
-            LOG.exception('Failed to get access token for %s' % self.title)
-
+        except Exception:
+            log.exception('Failed to get access token for %s' % self.title)
 
 
 class MyPlexServerShare(PlexObject):
