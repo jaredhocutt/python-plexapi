@@ -96,3 +96,20 @@ def test_playqueues(plex):
     assert len(playqueue.items) == 1, 'No items in play queue.'
     assert playqueue.items[0].title == episode.title, 'Wrong show queued.'
     assert playqueue.playQueueID, 'Play queue ID not set.'
+
+
+def test_share(plex, show, fresh_plex):
+    episodes = show.episodes()
+
+    playlist = plex.createPlaylist('shared_from_test_plexapi', episodes)
+
+    playlist.share('hellowlol')
+
+    # Login to testserver as hellowlol
+    user = plex.myPlexAccount().user('hellowlol')
+
+    user_plex = fresh_plex(plex._base_url, user.get_token(plex.machineIdentifier))
+
+    assert playlist in user_plex.playlists()
+
+    playlist.delete()
