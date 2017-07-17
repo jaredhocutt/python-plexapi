@@ -113,9 +113,3 @@ class Playlist(PlexPartialObject, Playable):
         # Login to your server using your friends credentials.
         user_server = PlexServer(self._server._baseurl, token)
         return self.create(user_server, self.title, self.items())
-
-
-
-
-
-
